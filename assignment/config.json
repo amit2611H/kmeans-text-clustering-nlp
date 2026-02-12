@@ -1,0 +1,5 @@
+{
+  "data": "data/atis_data.tsv",
+  "encoding_type": "SBERT",
+  "invocations": 20
+}
