@@ -1,13 +1,14 @@
 # K-Means Text Clustering (NLP)
 
-Implementation of the K-Means clustering algorithm from scratch for text data, 
-as part of an academic Natural Language Processing assignment.
+Custom implementation of the K-Means clustering algorithm for semantic text clustering.
 
-The project compares two text representation methods:
+This project explores unsupervised text clustering using two representation methods:
+
 - **TF-IDF**
 - **SBERT (Sentence-BERT embeddings)**
 
-Clustering performance is evaluated using:
+Clustering quality is evaluated using:
+
 - **Rand Index (RI)**
 - **Adjusted Rand Index (ARI)**
 
@@ -15,47 +16,87 @@ Clustering performance is evaluated using:
 
 ## 📌 Project Overview
 
-Clustering is a fundamental unsupervised learning task in NLP.  
-This project implements the full K-Means pipeline without using the `sklearn.KMeans` API.
+Clustering is a core unsupervised learning task in NLP.  
+In this project, the full K-Means pipeline was implemented manually — without using `sklearn.KMeans`.
 
-Key features:
-- Custom K-Means implementation
-- KMeans++ initialization
-- Automatic extraction of K (number of clusters) from labeled dataset
-- Support for multiple text encoding methods (TF-IDF / SBERT)
-- Multiple invocations with averaged evaluation metrics
-- Performance evaluation using RI and ARI
+The system:
+
+- Encodes text using TF-IDF or SBERT embeddings
+- Automatically infers the number of clusters (K) from dataset labels
+- Performs multiple clustering runs to reduce randomness
+- Computes averaged RI and ARI scores for robust evaluation
 
 ---
 
 ## 📊 Results (ATIS Dataset)
 
 Configuration:
-- Encoding: SBERT
-- Invocations: 20
+- Encoding: **SBERT**
+- Invocations: **20 runs**
 
 Results:
-- **Mean RI Score:** ~0.726
-- **Mean ARI Score:** ~0.102
-- Runtime: ~32 seconds (20 runs)
+- **Mean RI Score:** 0.726
+- **Mean ARI Score:** 0.102
+- **Runtime:** ~32 seconds (20 runs)
 
-The results are consistent with expected performance for SBERT-based clustering on the ATIS dataset.
+The results align with expected performance benchmarks for SBERT-based clustering on the ATIS dataset.
 
 ---
 
 ## 🧠 Implementation Details
 
-- Text is encoded using either:
-  - `TfidfVectorizer`
-  - `sentence-transformers/all-MiniLM-L6-v2`
-- K-Means implemented manually:
-  - Custom centroid initialization (KMeans++)
-  - Iterative centroid update
-  - Convergence detection
-- Evaluation:
-  - `sklearn.metrics.rand_score`
-  - `sklearn.metrics.adjusted_rand_score`
+### Text Representation
+- `TfidfVectorizer` for sparse lexical features
+- `sentence-transformers/all-MiniLM-L6-v2` for semantic embeddings
+
+### Clustering Algorithm
+- Custom K-Means implementation
+- KMeans++ centroid initialization
+- Iterative centroid updates until convergence
+- Automatic K extraction
+- Multiple random initializations for stability
+
+### Evaluation
+- `sklearn.metrics.rand_score`
+- `sklearn.metrics.adjusted_rand_score`
+- Averaged metrics across multiple runs
 
 ---
 
 ## 🗂 Project Structure
+
+```text
+.
+├── main.py                  # Main execution file (clustering + evaluation)
+├── config.json              # Configuration file (dataset, encoding type, runs)
+├── data/
+│   ├── atis_data.tsv        # ATIS dataset (labels used only for evaluation)
+│   └── news_mix_data.tsv    # Additional dataset
+├── .gitignore
+└── README.md
+```
+
+---
+
+## ⚙️ Installation
+
+Recommended Python version: 3.11 or 3.12
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install numpy pandas scikit-learn torch sentence-transformers
+```
+
+---
+
+## ▶️ Running
+
+Edit `config.json` if needed:
+
+```json
+{
+  "data": "data/atis_data.tsv",
+  "encoding_type": "SBERT",
+  "invocations": 20
+}
