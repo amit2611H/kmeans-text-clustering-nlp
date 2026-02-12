@@ -100,3 +100,10 @@ Edit `config.json` if needed:
   "encoding_type": "SBERT",
   "invocations": 20
 }
+```
+
+Then execute:
+
+```bash
+python main.py
+```
